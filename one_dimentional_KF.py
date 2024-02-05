@@ -34,10 +34,10 @@ def predict(posterior, manuveur):
     P = P + Q
     return gaussian(x, P)
 
-sensor_variance = 300.**2
-process_variance = 10.
+sensor_variance = 50.**2
+process_variance = 2.
 process_model= gaussian(1., process_variance)
-posterior = gaussian(0., 500.)
+posterior = gaussian(0., 10.)
 
 # car simulate
 zs = []
