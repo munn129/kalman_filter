@@ -1,7 +1,5 @@
-import numpy as np
 from numpy.random import randn
 import matplotlib.pyplot as plt
-import filterpy.stats as stats
 from collections import namedtuple
 from math import sqrt
 
