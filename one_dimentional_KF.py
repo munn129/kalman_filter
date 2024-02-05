@@ -8,17 +8,6 @@ from math import sqrt
 gaussian = namedtuple('Gaussian', ['mean', 'var'])
 gaussian.__repr__ = lambda s: f'Norm(mean={s[0]:.3f}, variance={s[1]:.3f})'
 
-def car_simulator(x0 ,velocity, measurement_variance=0.0, process_variance=0.0):
-    
-    dt = 1.0
-    measurement_std = sqrt(measurement_variance)
-    process_std = sqrt(process_variance)
-    
-    dx = velocity + randn() * process_std
-    x = x0
-    x += x0 * dt
-
-    return x + randn() * measurement_std
 
 def update(prior, measurement):
     # mean and variance
@@ -45,11 +34,23 @@ def predict(posterior, manuveur):
     P = P + Q
     return gaussian(x, P)
 
-sensor_variance = 100.**2
+sensor_variance = 300.**2
 process_variance = 10.
 process_model= gaussian(1., process_variance)
 posterior = gaussian(0., 500.)
-zs = [car_simulator(posterior.mean, 5., sensor_variance, process_variance) for _ in range(1000)]
+
+# car simulate
+zs = []
+dt = 1.0
+sensor_std = sqrt(sensor_variance)
+process_std = sqrt(process_variance)
+velocity = 1.0
+x0 = 0
+for _ in range(1000):
+    dx = velocity + randn() * process_std
+    x0 += dx * dt
+    zs.append(x0 + randn() * sensor_std)
+
 ps = []
 
 for i in range(1000):
